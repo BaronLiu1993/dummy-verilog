@@ -1,40 +1,48 @@
-// Simple Verilog module - 2-to-1 Multiplexer
-module mux2to1 (
+// Simple Verilog module - 1-bit Full Adder
+module full_adder (
     input a,
     input b,
-    input sel,
-    output out
+    input cin,
+    output sum,
+    output cout
 );
-    assign out = sel ? b : a;
+    assign sum = a ^ b ^ cin;
+    assign cout = (a & b) | (cin & (a ^ b));
 endmodule
 
 // Testbench
-module mux2to1_tb;
-    reg a, b, sel;
-    wire out;
+module full_adder_tb;
+    reg a, b, cin;
+    wire sum, cout;
     
-    mux2to1 uut (
+    full_adder uut (
         .a(a),
         .b(b),
-        .sel(sel),
-        .out(out)
+        .cin(cin),
+        .sum(sum),
+        .cout(cout)
     );
     
     initial begin
-        // Test case 1: sel=0, should output a
-        a = 1'b0; b = 1'b1; sel = 1'b0;
+        // Test case 1: 0+0+0 = 0, carry=0
+        a = 1'b0; b = 1'b0; cin = 1'b0;
         #10;
-        $display("Test 1: a=%b, b=%b, sel=%b, out=%b", a, b, sel, out);
+        $display("Test 1: a=%b, b=%b, cin=%b => sum=%b, cout=%b", a, b, cin, sum, cout);
         
-        // Test case 2: sel=1, should output b
-        a = 1'b0; b = 1'b1; sel = 1'b1;
+        // Test case 2: 1+1+0 = 0, carry=1
+        a = 1'b1; b = 1'b1; cin = 1'b0;
         #10;
-        $display("Test 2: a=%b, b=%b, sel=%b, out=%b", a, b, sel, out);
+        $display("Test 2: a=%b, b=%b, cin=%b => sum=%b, cout=%b", a, b, cin, sum, cout);
         
-        // Test case 3: sel=0, different values
-        a = 1'b1; b = 1'b0; sel = 1'b0;
+        // Test case 3: 1+0+1 = 0, carry=1
+        a = 1'b1; b = 1'b0; cin = 1'b1;
         #10;
-        $display("Test 3: a=%b, b=%b, sel=%b, out=%b", a, b, sel, out);
+        $display("Test 3: a=%b, b=%b, cin=%b => sum=%b, cout=%b", a, b, cin, sum, cout);
+        
+        // Test case 4: 1+1+1 = 1, carry=1
+        a = 1'b1; b = 1'b1; cin = 1'b1;
+        #10;
+        $display("Test 4: a=%b, b=%b, cin=%b => sum=%b, cout=%b", a, b, cin, sum, cout);
         
         $finish;
     end
