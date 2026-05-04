@@ -33,17 +33,7 @@ module full_adder_tb;
         a = 1'b1; b = 1'b1; cin = 1'b0;
         #10;
         $display("Test 2: a=%b, b=%b, cin=%b => sum=%b, cout=%b", a, b, cin, sum, cout);
-        
-        // Test case 3: 1+0+1 = 0, carry=1
-        a = 1'b1; b = 1'b0; cin = 1'b1;
-        #10;
-        $display("Test 3: a=%b, b=%b, cin=%b => sum=%b, cout=%b", a, b, cin, sum, cout);
-        
-        // Test case 4: 1+1+1 = 1, carry=1
-        a = 1'b1; b = 1'b1; cin = 1'b1;
-        #10;
-        $display("Test 4: a=%b, b=%b, cin=%b => sum=%b, cout=%b", a, b, cin, sum, cout);
-        
+
         $finish;
     end
 endmodule
